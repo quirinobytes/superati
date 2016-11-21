@@ -16,6 +16,16 @@ body {
     font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+//sbresscrevendo a classe do google contato
+
+.freebirdFormviewerViewFormBanner{
+	width:20px;
+	height:20px;
+}
+
+
+
+
 .text-vertical-center {
     display: table-cell;
     text-align: center;
