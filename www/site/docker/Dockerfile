@@ -22,6 +22,8 @@ RUN INSTALL_PKGS="nodejs redhat-lsb libXScrnSaver xdg-utils liberation-fonts" &&
     npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner || cat /home/jenkins/.npm/_logs/*-debug.log && \
     chown root:root /home/jenkins -R && \
     chmod 775 /home/jenkins/.config -R && \
-    chmod 775 /home/jenkins/.npm -R
-
-USER 1001
+    chmod 775 /home/jenkins/.npm -R && \
+    yum install -y yum-utils && \
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+    yum -y install docker-ce net-tools 
+USER root
