@@ -19,12 +19,18 @@ RUN mv kubectl /usr/bin/
 
 RUN apt-get update
 
+# node.js
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt -y install gcc g++ make
+RUN apt-get install -y nodejs
+
+COPY 
+COPY
+
 # Add python virtualenv and libs
 RUN apt-get install -y python-pip python-dev libxml2-dev libxslt1-dev zlib1g-dev
 RUN pip install virtualenv
 
-# node.js
-RUN apt-get install -y nodejs
 
 # install junit
 RUN apt-get install -y junit
