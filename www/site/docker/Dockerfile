@@ -11,12 +11,12 @@ ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm g
 RUN curl --silent --location https://rpm.nodesource.com/setup_${NODEJS_VERSION}.x | bash -
 
 RUN INSTALL_PKGS="nodejs redhat-lsb libXScrnSaver xdg-utils liberation-fonts" && \
-    yum install -y --setopt=tsflags=nodocs && \
+    yum install -y --setopt=tsflags=nodocs \
+      $INSTALL_PKGS && \
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
     yum -y install docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch.rpm && \
     yum -y install docker-ce-17.03.2.ce-1.el7.centos.x86_64.rpm net-tools && \
 
-      $INSTALL_PKGS && \
     yum -y localinstall \
       google-chrome-stable_current_x86_64.rpm && \
     rm google-chrome-stable_current_x86_64.rpm && \
@@ -27,5 +27,5 @@ RUN INSTALL_PKGS="nodejs redhat-lsb libXScrnSaver xdg-utils liberation-fonts" &&
     chown root:root /home/jenkins -R && \
     chmod 775 /home/jenkins/.config -R && \
     chmod 775 /home/jenkins/.npm -R && \
-    yum install -y yum-utils 
+    yum install -y yum-utils && \
 USER root
