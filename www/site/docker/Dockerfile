@@ -6,6 +6,7 @@ WORKDIR /opt
 
 # Add docker client
 ENV DOCKER_VERION 1.12.5
+ENV KUBECONFIG kube_config_cluster.yml
 RUN wget https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERION}.tgz
 RUN tar -zxvf docker-${DOCKER_VERION}.tgz
 RUN cp docker/docker /usr/bin/
@@ -24,19 +25,12 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt -y install gcc g++ make
 RUN apt-get install -y nodejs
 
-COPY 
-COPY
+COPY kube_config_cluster.yml ./
+COPY Dockerfile ./
 
 # Add python virtualenv and libs
-RUN apt-get install -y python-pip python-dev libxml2-dev libxslt1-dev zlib1g-dev
+RUN apt-get install -y python-pip python-dev libxml2-dev libxslt1-dev zlib1g-dev junit bc
 RUN pip install virtualenv
-
-
-# install junit
-RUN apt-get install -y junit
-
-# install bc - math expressions
-RUN apt-get install -y bc
 
 VOLUME /var/lib/docker
 
