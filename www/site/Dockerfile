@@ -1,20 +1,17 @@
-# specify the node base image with your desired version node:<version>
-FROM node:carbon
+FROM quirinobytes/jenkins-k8s-nodejs
 
-# Create app directory
+USER root
+
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+# Add docker client
+
+COPY . .
+COPY docker/kube_config_cluster.yml ./
+
 RUN npm install
 
-# Bundle app source
-COPY . .
+VOLUME /var/lib/docker
 
-EXPOSE 81
-CMD [ "npm", "start" ]
-
-
-#ENTRYPOINT ["node","bolsa.js"]
+EXPOSE 8080
+ENTRYPOINT ["node app.js"]
