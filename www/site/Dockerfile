@@ -2,7 +2,7 @@ FROM quirinobytes/jenkins-slave-k8s
 
 USER root
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 ENV PATH=/bin:/usr/bin:/usr/local/bin
 
@@ -16,4 +16,4 @@ RUN npm install
 VOLUME /var/lib/docker
 
 EXPOSE 8080
-ENTRYPOINT ["node app.js"]
+ENTRYPOINT ["/usr/bin/node /app/app.js"]
