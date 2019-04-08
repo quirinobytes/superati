@@ -25,5 +25,6 @@ RUN INSTALL_PKGS="nodejs redhat-lsb libXScrnSaver xdg-utils liberation-fonts" &&
     chmod 775 /home/jenkins/.npm -R && \
     yum install -y yum-utils && \
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
-    yum -y install docker-ce net-tools 
+    yum -y install docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch.rpm && \
+    yum -y install docker-ce-17.03.2.ce-1.el7.centos.x86_64.rpm net-tools
 USER root
