@@ -8,12 +8,18 @@ ENV PATH=/bin:/usr/bin:/usr/local/bin
 
 # Add docker client
 
-COPY . .
+COPY . ./
+RUN npm install
+
 COPY docker/kube_config_cluster.yml ./
 
-RUN npm install
+RUN pwd
+RUN ls -la
+RUN whereis node
+RUN ls /usr/bin
+
 
 VOLUME /var/lib/docker
 
-EXPOSE 8080
-ENTRYPOINT ["/usr/bin/node /app/app.js"]
+EXPOSE 1010
+ENTRYPOINT ["/usr/bin/nodejs","app.js"]
