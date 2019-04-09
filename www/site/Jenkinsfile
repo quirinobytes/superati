@@ -103,4 +103,4 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
             }
         }
     }
-}
+})
