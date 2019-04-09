@@ -15,7 +15,6 @@ RUN 'whereis npm'
 RUN 'whereis node'
 RUN "npm install"
 VOLUME /var/lib/docker
-#VOLUME /var/run/docker.sock
-
 EXPOSE 1010
+
 ENTRYPOINT ["/usr/bin/nodejs","/app/app.js"]
