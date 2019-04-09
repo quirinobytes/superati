@@ -6,7 +6,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
    echo 'Estou no Branch' + env.BRANCH_NAME
    podTemplate(
        label: label,
-    //    containers: [
+        containers: [
     //      containerTemplate(
     //        name: 'docker',
     //        image: 'registry.rc.pactual.net/rc-docker',
@@ -42,17 +42,18 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
     //     envVar(key: 'SERVER_URL', value: '/config/api'),
     //     envVar(key: 'COMMISSION_BASE_URL', value: '/config/')
     //   ]),
-      containerTemplate(
-        name: 'jenkins-slave-k8s',
-        image: 'quirinobytes/jenkins-slave-k8s',
-        ttyEnabled: true,
-        command: 'cat',
-        envVars: [
-        envVar(key: 'SERVER_URL', value: '/login/api'),
-        envVar(key: 'APPLICATION_ID', value: 1),
-        envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
-        envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
-        ],
+        containerTemplate(
+            name: 'jenkins-slave-k8s',
+            image: 'quirinobytes/jenkins-slave-k8s',
+            ttyEnabled: true,
+            command: 'cat',
+            envVars: [
+                envVar(key: 'SERVER_URL', value: '/login/api'),
+                envVar(key: 'APPLICATION_ID', value: 1),
+                envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
+                envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
+            ]
+        ),
         volumes: [
             hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
         ]
