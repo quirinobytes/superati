@@ -57,7 +57,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
         volumes: [
             hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
         ]
-{
+
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
     node(label) {
@@ -103,4 +103,4 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
             }
         }
     }
-})
+)
