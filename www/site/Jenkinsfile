@@ -28,16 +28,37 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
     node(label) {
-        stage('Git Clone - superati') {
+                try {
+                    stage('Git Clone - superati') {
+                        checkout scm
+                        echo "Git checkout - Site Superati " + env.BRANCH_NAME
+                    }
+109             } catch (e) {
+110                 echo "Erro: Houve falha no git checkout!"
+111                 // Mark build as failed
+112                 currentBuild.result == "FAILURE";
+113                 // Set Variables
+// 114                 def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
+// 115                 def content = '${JELLY_SCRIPT, template="html"}'
+// 116
+// 117                 // send mail
+// 118                 if(to != null && !to.isEmpty()) {
+// 119                     emailext(body: content, mimeType: 'text/html',
+// 120                         replyTo: '$DEFAULT_REPLYTO', subject: subject,
+// 121                         to: to, attachLog: true)
+// 122                 }
+// 123                 // Mark current build as failure and throw error
+124                 throw e;
+125             }
             // steps{
-                container('jenkins-slave-k8s'){
-                    echo 'Clone sources'
-                    git url: 'https://github.com/quirinobytes/superati.git'
-                    sh 'pwd'
-                    sh 'ls -la'
-                    sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
-                    sh 'ls -la /home/jenkins/workspace/site-superati'
-                }
+                // container('jenkins-slave-k8s'){
+                //     echo 'Clone sources'
+                //     git url: 'https://github.com/quirinobytes/superati.git'
+                //     sh 'pwd'
+                //     sh 'ls -la'
+                //     sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
+                //     sh 'ls -la /home/jenkins/workspace/site-superati'
+                // }
             // }o
 
         }
