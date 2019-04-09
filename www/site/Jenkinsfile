@@ -29,7 +29,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
     // docker sock.
     node(label) {
         stage('Git Clone - superati') {
-            steps{
+            // steps{
                 container('jenkins-slave-k8s'){
                     echo 'Clone sources'
                     git url: 'https://github.com/quirinobytes/superati.git'
@@ -38,22 +38,23 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
                     sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
                     sh 'ls -la /home/jenkins/workspace/site-superati'
                 }
-            }
+            // }o
+
         }
     
         stage('Install dependencies - npm install') {
-            steps{
+            // steps{
                 container('jenkins-slave-k8s'){
                     sh 'npm install'
                 }
-            }
+            // }
         }
         stage('Starting app.js - node app') {
-            steps{
+            // steps{
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati; node app.js &'
                 }
-            }
+            // }
         }
         stage('Kubectl - get pods') {
             steps{
