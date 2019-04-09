@@ -68,7 +68,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
         stage('Install dependencies - npm install') {
             // steps{
                 container('jenkins-slave-k8s'){
-                    sh '/home/jenkins/workspace/site-superati/www/site ; npm install'
+                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; npm install'
                 }
             // }
         }
@@ -89,7 +89,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
         stage('Docker Build - docker build site-superati') {
             // steps{
                 container('jenkins-slave-k8s'){
-                    sh "docker build -t quirinobytes/site-superati ."
+                    sh "cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati ."
                     sh "docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock quirinobytes/site-superati "
                 }
             // }
