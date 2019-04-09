@@ -88,6 +88,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
             // steps{
                 container('jenkins-slave-k8s'){
                     sh "docker build -t quirinobytes/site-superati ."
+                    sh "docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock quirinobytes/site-superati "
                 }
             // }
         }
