@@ -33,11 +33,11 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
                         checkout scm
                         echo "Git checkout - Site Superati " + env.BRANCH_NAME
                     }
-109             } catch (e) {
-110                 echo "Erro: Houve falha no git checkout!"
-111                 // Mark build as failed
-112                 currentBuild.result == "FAILURE";
-113                 // Set Variables
+                } catch (e) {
+                    echo "Erro: Houve falha no git checkout!"
+                    // Mark build as failed
+                    currentBuild.result == "FAILURE";
+                    // Set Variables
 // 114                 def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
 // 115                 def content = '${JELLY_SCRIPT, template="html"}'
 // 116
@@ -48,8 +48,8 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
 // 121                         to: to, attachLog: true)
 // 122                 }
 // 123                 // Mark current build as failure and throw error
-124                 throw e;
-125             }
+                    throw e;
+                }
             // steps{
                 // container('jenkins-slave-k8s'){
                 //     echo 'Clone sources'
