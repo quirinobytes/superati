@@ -7,57 +7,24 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
    podTemplate(
        label: label,
         containers: [
-    //      containerTemplate(
-    //        name: 'docker',
-    //        image: 'registry.rc.pactual.net/rc-docker',
-    //        ttyEnabled: true,
-    //        command: 'cat'),
-    //      containerTemplate(
-    //        name: 'nodejs',
-    //        image: 'registry.rc.pactual.net/rc-nodejs',
-    //        ttyEnabled: true,
-    //        command: 'cat'),
-    //      containerTemplate(
-    //         name: 'kubectl',
-    //         image: 'registry.rc.pactual.net/rc-kubectl',
-    //         ttyEnabled: true,
-    //         command: 'cat'),
-    //       containerTemplate(
-    //         name: 'rc-builder-frontend-commission',
-    //         image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
-    //         ttyEnabled: true,
-    //         command: 'cat',
-    //         envVars: [
-    //           envVar(key: 'SOCKET_URL', value: 'https://rcsocketio.dev.btg.cloud:3000'),
-    //           envVar(key: 'SERVER_URL', value: '/commission/api'),
-    //           envVar(key: 'COMMISSION_BASE_URL', value: '/commission/'),
-    //           envVar(key: 'DISABLE_EXPORT_BUTTON', value: false)
-    //       ]),
-    //   containerTemplate(
-    //     name: 'rc-builder-frontend-config',
-    //     image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
-    //     ttyEnabled: true,
-    //     command: 'cat',
-    //     envVars: [
-    //     envVar(key: 'SERVER_URL', value: '/config/api'),
-    //     envVar(key: 'COMMISSION_BASE_URL', value: '/config/')
-    //   ]),
-        containerTemplate(
-            name: 'jenkins-slave-k8s',
-            image: 'quirinobytes/jenkins-slave-k8s',
-            ttyEnabled: true,
-            command: 'cat',
-            envVars: [
-                envVar(key: 'SERVER_URL', value: '/login/api'),
-                envVar(key: 'APPLICATION_ID', value: 1),
-                envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
-                envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
-            ])
+		        containerTemplate(
+		            name: 'jenkins-slave-k8s',
+		            image: 'quirinobytes/jenkins-slave-k8s',
+		            ttyEnabled: true,
+		            command: 'cat',
+		            envVars: [
+		                envVar(key: 'SERVER_URL', value: '/login/api'),
+		                envVar(key: 'APPLICATION_ID', value: 1),
+		                envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
+		                envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
+		            ]
+		         )
         ],
         volumes: [
             hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
         ]
-
+)
+{
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
     node(label) {
@@ -103,4 +70,4 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
             }
         }
     }
-)
+ }
