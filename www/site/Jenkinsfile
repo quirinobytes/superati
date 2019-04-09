@@ -3,8 +3,8 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
 
 
 //if (env.BRANCH_NAME == 'master') {
-echo 'Estou no Branch' + env.BRANCH_NAME
-podTemplate(
+echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
+  podTemplate(
        label: label,
         containers: [
 		        containerTemplate(
@@ -14,23 +14,19 @@ podTemplate(
 		            command: 'cat'
 		         )
         ],
+        // Here we set a mount on the pod templete so docker container will have access to the host docker sock.
         volumes: [
             hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
         ]
-)
+  )
 {
-    // Here we set a mount on the pod templete so docker container will have access to the host
-    // docker sock.
     node(label) {
                 try {
                     stage('Git Clone - superati') {
-
                         // checkout scm
                         echo "Git checkout - Site Superati " + env.BRANCH_NAME
-                         git url: 'https://github.com/quirinobytes/superati.git'
-                         //sh 'pwd; ls -laR; whoami'
-
-4                    }
+                        git url: 'https://github.com/quirinobytes/superati.git'
+                    }
                 } catch (e) {
                     echo "Erro: Houve falha no git checkout!"
                     // Mark build as failed
@@ -56,7 +52,7 @@ podTemplate(
         stage('Docker Build - docker build site-superati') {
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
-                    sh 'docker rm -f site-superati-prod'
+//                    sh 'docker rm -f site-superati-prod'
                     sh 'docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                 }
         }
