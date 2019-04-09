@@ -11,7 +11,7 @@ ENV PATH=/bin:/usr/bin:/usr/local/bin
 COPY . ./
 RUN npm install
 
-COPY docker/kube_config_cluster.yml ./
+COPY kube_config_cluster.yml ./
 
 RUN pwd
 RUN ls -la
