@@ -3,21 +3,15 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
 
 
 //if (env.BRANCH_NAME == 'master') {
-   echo 'Estou no Branch' + env.BRANCH_NAME
-   podTemplate(
+echo 'Estou no Branch' + env.BRANCH_NAME
+podTemplate(
        label: label,
         containers: [
 		        containerTemplate(
 		            name: 'jenkins-slave-k8s',
 		            image: 'quirinobytes/jenkins-slave-k8s',
 		            ttyEnabled: true,
-		            command: 'cat',
-		            // envVars: [
-		            //     envVar(key: 'SERVER_URL', value: '/login/api'),
-		            //     envVar(key: 'APPLICATION_ID', value: 1),
-		            //     envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
-		            //     envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
-		            // ]
+		            command: 'cat'
 		         )
         ],
         volumes: [
@@ -36,63 +30,34 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
                          git url: 'https://github.com/quirinobytes/superati.git'
                          //sh 'pwd; ls -laR; whoami'
 
-                    }
+4                    }
                 } catch (e) {
                     echo "Erro: Houve falha no git checkout!"
                     // Mark build as failed
                     currentBuild.result == "FAILURE";
-                    // Set Variables
-// 114                 def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
-// 115                 def content = '${JELLY_SCRIPT, template="html"}'
-// 116
-// 117                 // send mail
-// 118                 if(to != null && !to.isEmpty()) {
-// 119                     emailext(body: content, mimeType: 'text/html',
-// 120                         replyTo: '$DEFAULT_REPLYTO', subject: subject,
-// 121                         to: to, attachLog: true)
-// 122                 }
-// 123                 // Mark current build as failure and throw error
                     throw e;
                 }
-            // steps{
-                // container('jenkins-slave-k8s'){
-                //     echo 'Clone sources'
-                //     git url: 'https://github.com/quirinobytes/superati.git'
-                //     sh 'pwd'
-                //     sh 'ls -la'
-                //     sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
-                //     sh 'ls -la /home/jenkins/workspace/site-superati'
-                // }
-            // }o
 
         stage('Install dependencies - npm install') {
-            // steps{
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; /usr/bin/npm install'
                 }
-            // }
         }
         stage('Starting app.js - node app') {
-            // steps{
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; /usr/bin/node app.js &'
                 }
-            // }
         }
         stage('Kubectl - get pods') {
-            // steps{
                 container('jenkins-slave-k8s'){
                     sh "kubectl get pods"
                 }
-            // }
         }
         stage('Docker Build - docker build site-superati') {
-            // steps{
                 container('jenkins-slave-k8s'){
                     sh "cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati ."
                     sh "docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock quirinobytes/site-superati "
                 }
-            // }
         }
     }
- }
+}
