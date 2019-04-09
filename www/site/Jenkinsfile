@@ -50,6 +50,7 @@ if (env.BRANCH_NAME == 'master') {
         envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
         ]
         )
+   )
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
     volumes: [
