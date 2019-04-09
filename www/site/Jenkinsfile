@@ -34,7 +34,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
                         // checkout scm
                         echo "Git checkout - Site Superati " + env.BRANCH_NAME
                          git url: 'https://github.com/quirinobytes/superati.git'
-                         sh 'pwd; ls'
+                         sh 'pwd; ls -la; whoami'
 
                     }
                 } catch (e) {
