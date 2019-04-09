@@ -48,10 +48,10 @@ if (env.BRANCH_NAME == 'master') {
         envVar(key: 'APPLICATION_ID', value: 1),
         envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
         envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
-        ]
-        )
+        ],
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:rw
+      )
    )
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
