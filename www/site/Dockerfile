@@ -11,9 +11,9 @@ ENV APP_NAME=www.superati.com.br
 COPY . ./
 COPY kube_config_cluster.yml ./
 
-RUN 'whereis npm'
-RUN 'whereis node'
-RUN "npm install"
+RUN pwd
+RUN ls -ls
+RUN npm install
 VOLUME /var/lib/docker
 EXPOSE 1010
 
