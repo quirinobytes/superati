@@ -57,40 +57,41 @@ if (env.BRANCH_NAME == 'master') {
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
     
-}
-
-node {
-    stage('Git Clone - superati') {
-        steps{
-            container('jenkins-slave-k8s'){
-                echo 'Clone sources'
-                git url: 'https://github.com/quirinobytes/superati.git'
-                sh 'pwd'
-                sh 'ls -la'
-                sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
-                sh 'ls -la /home/jenkins/workspace/site-superati'
+    node(label) {
+        stage('Git Clone - superati') {
+            steps{
+                container('jenkins-slave-k8s'){
+                    echo 'Clone sources'
+                    checkout scm
+//                    git url: 'https://github.com/quirinobytes/superati.git'
+                    sh 'pwd'
+                    sh 'ls -la'
+                    sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
+                    sh 'ls -la /home/jenkins/workspace/site-superati'
+                }
             }
         }
-    }
-  
-    stage('Install dependencies - npm install') {
-        container('jenkins-slave-k8s'){
-            sh 'npm install'
+    
+        stage('Install dependencies - npm install') {
+            steps{
+                container('jenkins-slave-k8s'){
+                    sh 'npm install'
+                }
         }
-    }
-    stage('Starting app.js - node app') {
-        container('jenkins-slave-k8s'){
-            sh 'cd /home/jenkins/workspace/site-superati; node app.js &'
+        stage('Starting app.js - node app') {
+            container('jenkins-slave-k8s'){
+                sh 'cd /home/jenkins/workspace/site-superati; node app.js &'
+            }
         }
-    }
-    stage('Kubectl - get pods') {
-        container('jenkins-slave-k8s'){
-            sh "kubectl get pods"
+        stage('Kubectl - get pods') {
+            container('jenkins-slave-k8s'){
+                sh "kubectl get pods"
+            }
         }
-    }
-    stage('Docker Build - docker build site-superati') {
-        container('jenkins-slave-k8s'){
-            sh "docker build -t quirinobytes/site-superati ."
+        stage('Docker Build - docker build site-superati') {
+            container('jenkins-slave-k8s'){
+                sh "docker build -t quirinobytes/site-superati ."
+            }
         }
     }
 }
