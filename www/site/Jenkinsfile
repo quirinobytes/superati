@@ -1,46 +1,46 @@
 if (env.BRANCH_NAME == 'master') {
     echo 'Estou no Branch' + env.BRANCH_NAME
-    podTemplate(
-        label: label,
-        containers: [
-          containerTemplate(
-            name: 'docker',
-            image: 'registry.rc.pactual.net/rc-docker',
-            ttyEnabled: true,
-            command: 'cat'),
-          containerTemplate(
-            name: 'nodejs',
-            image: 'registry.rc.pactual.net/rc-nodejs',
-            ttyEnabled: true,
-            command: 'cat'),
-          containerTemplate(
-            name: 'kubectl',
-            image: 'registry.rc.pactual.net/rc-kubectl',
-            ttyEnabled: true,
-            command: 'cat'),
-          containerTemplate(
-            name: 'rc-builder-frontend-commission',
-            image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
-            ttyEnabled: true,
-            command: 'cat',
-            envVars: [
-              envVar(key: 'SOCKET_URL', value: 'https://rcsocketio.dev.btg.cloud:3000'),
-              envVar(key: 'SERVER_URL', value: '/commission/api'),
-              envVar(key: 'COMMISSION_BASE_URL', value: '/commission/'),
-              envVar(key: 'DISABLE_EXPORT_BUTTON', value: false)
-          ]),
+   podTemplate(
+       label: label,
+    //    containers: [
+    //      containerTemplate(
+    //        name: 'docker',
+    //        image: 'registry.rc.pactual.net/rc-docker',
+    //        ttyEnabled: true,
+    //        command: 'cat'),
+    //      containerTemplate(
+    //        name: 'nodejs',
+    //        image: 'registry.rc.pactual.net/rc-nodejs',
+    //        ttyEnabled: true,
+    //        command: 'cat'),
+    //      containerTemplate(
+    //         name: 'kubectl',
+    //         image: 'registry.rc.pactual.net/rc-kubectl',
+    //         ttyEnabled: true,
+    //         command: 'cat'),
+    //       containerTemplate(
+    //         name: 'rc-builder-frontend-commission',
+    //         image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
+    //         ttyEnabled: true,
+    //         command: 'cat',
+    //         envVars: [
+    //           envVar(key: 'SOCKET_URL', value: 'https://rcsocketio.dev.btg.cloud:3000'),
+    //           envVar(key: 'SERVER_URL', value: '/commission/api'),
+    //           envVar(key: 'COMMISSION_BASE_URL', value: '/commission/'),
+    //           envVar(key: 'DISABLE_EXPORT_BUTTON', value: false)
+    //       ]),
+    //   containerTemplate(
+    //     name: 'rc-builder-frontend-config',
+    //     image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
+    //     ttyEnabled: true,
+    //     command: 'cat',
+    //     envVars: [
+    //     envVar(key: 'SERVER_URL', value: '/config/api'),
+    //     envVar(key: 'COMMISSION_BASE_URL', value: '/config/')
+    //   ]),
       containerTemplate(
-        name: 'rc-builder-frontend-config',
-        image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
-        ttyEnabled: true,
-        command: 'cat',
-        envVars: [
-        envVar(key: 'SERVER_URL', value: '/config/api'),
-        envVar(key: 'COMMISSION_BASE_URL', value: '/config/')
-    ]),
-    containerTemplate(
-        name: 'rc-builder-frontend-login',
-        image: 'csbrunonovo/node_carbon_oracle_pm2:latest',
+        name: 'jenkins-slave-k8s',
+        image: 'quirinobytes/jenkins-slave-k8s',
         ttyEnabled: true,
         command: 'cat',
         envVars: [
@@ -58,32 +58,35 @@ if (env.BRANCH_NAME == 'master') {
 }
 
 node {
-    stage('Clone sources') {
-         echo 'Clone sources'
-        git url: 'https://github.com/quirinobytes/superati.git'
-        sh 'pwd'
-        sh 'ls -la'
-        sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
-        sh 'ls -la /home/jenkins/workspace/site-superati'
+    stage('Git Clone - superati') {
+      container('jenkins-slave-k8s'){
+          echo 'Clone sources'
+          git url: 'https://github.com/quirinobytes/superati.git'
+          sh 'pwd'
+          sh 'ls -la'
+          sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
+          sh 'ls -la /home/jenkins/workspace/site-superati'
+      }
     }
-
-    stage('Buildando') {
-        // Tool name from Jenkins configuration
-    //   sh 'pwd ; ls -la'
-    //   echo 'entrou na Artifactory stage '
-    //   sh 'echo rafael > saida.txt'
+  
+    stage('Install dependencies - npm install') {
+        container('jenkins-slave-k8s'){
+            sh 'npm install'
+        }
     }
-    stage('Install dependencies') {
-       sh 'npm install'
-
+    stage('Starting app.js - node app') {
+        container('jenkins-slave-k8s'){
+            sh 'cd /home/jenkins/workspace/site-superati; node app.js &'
+        }
     }
-    stage('Starting app.js') {
-         sh 'cd /home/jenkins/workspace/site-superati; node app.js &'
-     }
-    stage('Run kubectl') {
-        sh "kubectl get pods"
+    stage('Kubectl - get pods') {
+        container('jenkins-slave-k8s'){
+            sh "kubectl get pods"
+        }
     }
-    stage('Docker build.') {
-        sh "docker build -t quirinobytes/site-superati ."
+    stage('Docker Build - docker build site-superati') {
+        container('jenkins-slave-k8s'){
+            sh "docker build -t quirinobytes/site-superati ."
+        }
     }
 }
