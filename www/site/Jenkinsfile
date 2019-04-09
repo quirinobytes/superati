@@ -30,8 +30,12 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
     node(label) {
                 try {
                     stage('Git Clone - superati') {
-                        checkout scm
+
+                        // checkout scm
                         echo "Git checkout - Site Superati " + env.BRANCH_NAME
+                         git url: 'https://github.com/quirinobytes/superati.git'
+                         sh 'pwd; ls'
+
                     }
                 } catch (e) {
                     echo "Erro: Houve falha no git checkout!"
