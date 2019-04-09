@@ -3,7 +3,7 @@ FROM quirinobytes/jenkins-slave-k8s
 USER root
 WORKDIR /app
 
-ENV PATH=/bin:/usr/bin:/usr/local/bin
+ENV PATH=$PATH:/bin:/usr/bin:/usr/local/bin
 ENV APP_NAME=www.superati.com.br
 
 # Add docker client
@@ -11,6 +11,8 @@ ENV APP_NAME=www.superati.com.br
 COPY . ./
 COPY kube_config_cluster.yml ./
 
+RUN 'whereis npm'
+RUN 'whereis node'
 RUN "npm install"
 VOLUME /var/lib/docker
 #VOLUME /var/run/docker.sock
