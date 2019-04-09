@@ -59,7 +59,7 @@
     
 
 
-    node(label) {
+    node {
         stage('Git Clone - superati') {
             steps{
                 container('jenkins-slave-k8s'){
