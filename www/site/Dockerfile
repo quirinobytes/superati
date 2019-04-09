@@ -1,7 +1,7 @@
-FROM quirinobytes/jenkins-slave-k8s
+FROM quirinobytes/site-superati
 
 USER root
-WORKDIR /home/jenkins/workspace/site-superati/www/site
+WORKDIR /app
 
 ENV PATH=/bin:/usr/bin:/usr/local/bin
 ENV APP_NAME=www.superati.com.br
@@ -11,9 +11,9 @@ ENV APP_NAME=www.superati.com.br
 COPY . ./
 COPY kube_config_cluster.yml ./
 
-RUN "cd /home/jenkins/workspace/site-superati/www/site ; npm install"
+RUN "npm install"
 VOLUME /var/lib/docker
 #VOLUME /var/run/docker.sock
 
 EXPOSE 1010
-ENTRYPOINT ["/usr/bin/nodejs","/home/jenkins/workspace/site-superati/www/site/app.js"]
+ENTRYPOINT ["/usr/bin/nodejs","/app/app.js"]
