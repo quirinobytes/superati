@@ -56,7 +56,6 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     sh 'docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     sh 'docker stop  site-superati-prod'
                     sh 'docker rm  site-superati-prod'
- 
                 }
         }
     }
