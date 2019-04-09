@@ -1,4 +1,4 @@
-if (env.BRANCH_NAME == 'master') {
+//if (env.BRANCH_NAME == 'master') {
     echo 'Estou no Branch' + env.BRANCH_NAME
    podTemplate(
        label: label,
@@ -102,4 +102,4 @@ if (env.BRANCH_NAME == 'master') {
             }
         }
     }
-}
+//}
