@@ -12,12 +12,12 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
 		            image: 'quirinobytes/jenkins-slave-k8s',
 		            ttyEnabled: true,
 		            command: 'cat',
-		            envVars: [
-		                envVar(key: 'SERVER_URL', value: '/login/api'),
-		                envVar(key: 'APPLICATION_ID', value: 1),
-		                envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
-		                envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
-		            ]
+		            // envVars: [
+		            //     envVar(key: 'SERVER_URL', value: '/login/api'),
+		            //     envVar(key: 'APPLICATION_ID', value: 1),
+		            //     envVar(key: 'CLIENT_ID', value: 'CONCRETESECRET'),
+		            //     envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
+		            // ]
 		         )
         ],
         volumes: [
