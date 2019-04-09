@@ -56,7 +56,7 @@ podTemplate(
         stage('Docker Build - docker build site-superati') {
                 container('jenkins-slave-k8s'){
                     sh "cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati ."
-                    sh "docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock quirinobytes/site-superati "
+                    sh "docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati "
                 }
         }
     }
