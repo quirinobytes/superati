@@ -11,7 +11,7 @@ ENV APP_NAME=www.superati.com.br
 COPY . ./
 COPY kube_config_cluster.yml ./
 
-RUN "cd /app ; npm install;
+RUN "cd /app ; npm install"
 VOLUME /var/lib/docker
 #VOLUME /var/run/docker.sock
 
