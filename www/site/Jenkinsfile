@@ -68,14 +68,14 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
         stage('Install dependencies - npm install') {
             // steps{
                 container('jenkins-slave-k8s'){
-                    sh 'npm install'
+                    sh '/home/jenkins/workspace/site-superati/www/site ; npm install'
                 }
             // }
         }
         stage('Starting app.js - node app') {
             // steps{
                 container('jenkins-slave-k8s'){
-                    sh 'cd /home/jenkins/workspace/site-superati; node app.js &'
+                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; node app.js &'
                 }
             // }
         }
