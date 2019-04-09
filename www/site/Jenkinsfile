@@ -57,18 +57,18 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
             // }
         }
         stage('Kubectl - get pods') {
-            steps{
+            // steps{
                 container('jenkins-slave-k8s'){
                     sh "kubectl get pods"
                 }
-            }
+            // }
         }
         stage('Docker Build - docker build site-superati') {
-            steps{
+            // steps{
                 container('jenkins-slave-k8s'){
                     sh "docker build -t quirinobytes/site-superati ."
                 }
-            }
+            // }
         }
     }
  }
