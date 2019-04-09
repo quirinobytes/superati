@@ -61,8 +61,6 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
                 // }
             // }o
 
-        }
-    
         stage('Install dependencies - npm install') {
             // steps{
                 container('jenkins-slave-k8s'){
