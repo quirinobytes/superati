@@ -50,6 +50,8 @@ if (env.BRANCH_NAME == 'master') {
         envVar(key: 'CREATE_PASSWORD_RECAPTCHA_KEY', value: '6LeJQ0UUAAAAAIPZ_8kkuWDF-aEKeJfLzjEy7UZJ')
         ]
         )
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:rw
    )
     // Here we set a mount on the pod templete so docker container will have access to the host
     // docker sock.
@@ -60,14 +62,16 @@ if (env.BRANCH_NAME == 'master') {
 
 node {
     stage('Git Clone - superati') {
-      container('jenkins-slave-k8s'){
-          echo 'Clone sources'
-          git url: 'https://github.com/quirinobytes/superati.git'
-          sh 'pwd'
-          sh 'ls -la'
-          sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
-          sh 'ls -la /home/jenkins/workspace/site-superati'
-      }
+        steps{
+            container('jenkins-slave-k8s'){
+                echo 'Clone sources'
+                git url: 'https://github.com/quirinobytes/superati.git'
+                sh 'pwd'
+                sh 'ls -la'
+                sh 'mv /home/jenkins/workspace/site-superati/www/site/* /home/jenkins/workspace/site-superati'
+                sh 'ls -la /home/jenkins/workspace/site-superati'
+            }
+        }
     }
   
     stage('Install dependencies - npm install') {
