@@ -64,7 +64,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                             }
                     }
                     
-                    if ( $isContainerRunning != null ) {
+                    if ( ${isContainerRunning} != null ) {
                         sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod)'
                     }
 
