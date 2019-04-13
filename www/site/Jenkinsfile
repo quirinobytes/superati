@@ -54,15 +54,17 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
                     sh 'docker stop site-superati-prod'
-                    try {
-                            def isContainerRunning = sh 'docker ps -aq --filter name=quirinobytes/site-superati-prod | grep /site-superati-prod'
-                            echo 'Tem container rodando = '+  isContainerRunning
-                            //sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod); true'
-                        } catch (e) {
-                            throw e;
-                        }
+                    script {
+                        try {
+                                def isContainerRunning = sh 'docker ps -aq --filter name=quirinobytes/site-superati-prod '
+                                echo 'Tem container rodando = '+  isContainerRunning
+                                //sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod); true'
+                            } catch (e) {
+                                throw e;
+                            }
+                    }
                     
-                    if ( currentBuild.previousBuild.result == 'SUCCEEDED' ) {
+                    if ( isContainerRunning != null ) {
                         sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod)'
                     }
 
