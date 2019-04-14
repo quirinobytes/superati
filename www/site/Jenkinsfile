@@ -65,7 +65,7 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                         echo isContainerRunning
                                         echo "Meu nome é $nome e isContainer = " + isContainerRunning.size
                                        
-                                        if (isContainerRunning.size > 1){
+                                        if (isContainerRunning.length() > 1){
                                             echo "Tem container para matar"
                                            
                                                 def data = isContainerRunning.split('\n')
