@@ -54,7 +54,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
                     sh 'docker stop site-superati-prod'
-                    script{
+                    script {
                         try {
                             stage('tem container pra matar?'){
                                     def isContainerRunning = sh 'docker ps -aq --filter name=quirinobytes/site-superati-prod '
@@ -63,16 +63,16 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                                         sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod)'
                                     }
                             }
-                                //sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod); true'
+                          //sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod); true'
                             } catch (e) {
                                 throw e;
                             }
                     }
-                    
+                }
                     sh 'docker run --name site-superati-prod -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
-                }
+                
         }
     }
 }
