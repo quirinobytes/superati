@@ -1,61 +1,64 @@
-apiVersion: apps/v1beta2
-kind: Deployment
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: jenkins-rbac
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: site-superati
+  labels:
+    app: site-superati
 spec:
-  progressDeadlineSeconds: 600
-  replicas: 2
-  revisionHistoryLimit: 10
+  ports:
+    - port: 1010
+      targetPort: 1010
+      nodePort: 1010
   selector:
-    matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-default-superati-deploy
+    app: site-superati
+    tier: site-superati
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: site-superati
+  labels:
+    app: site-superati
+spec:
   strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
-      annotations:
-        cattle.io/timestamp: 2019-04-14T07:22:08Z
-        field.cattle.io/ports: '[null]'
-      creationTimestamp: null
       labels:
-        workload.user.cattle.io/workloadselector: deployment-default-superati-deploy
+        app: site-superati
+        tier: site-superati
     spec:
       containers:
-      - image: quirinobytes/site-superati
-        imagePullPolicy: Always
-        livenessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 10
-          periodSeconds: 2
-          successThreshold: 1
-          tcpSocket:
-            port: 1010
-          timeoutSeconds: 2
-        name: superati-deploy
-        readinessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 10
-          periodSeconds: 2
-          successThreshold: 2
-          tcpSocket:
-            port: 1010
-          timeoutSeconds: 2
-        resources: {}
+      - image: cirolini/jenkins-docker-kubectl
+        name: site-superati
         securityContext:
-          allowPrivilegeEscalation: false
-          capabilities: {}
-          privileged: false
-          readOnlyRootFilesystem: false
-          runAsNonRoot: false
-        stdin: true
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        tty: true
-      dnsPolicy: ClusterFirst
-      imagePullSecrets:
-      - name: docker-io-login-account
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
+          privileged: true
+        ports:
+        - containerPort: 8080
+          name: site-superati
+        volumeMounts:
+        # - name: jenkins-persistent-storage
+        #   mountPath: /var/jenkins_home
+        - name: docker
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: docker
+        hostPath:
+          path: /var/run/docker.sock
+      - name: jenkins-persistent-storage
+        # persistentVolumeClaim:
+        #   claimName: jenkins-claim
