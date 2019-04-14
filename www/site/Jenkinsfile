@@ -76,7 +76,6 @@ echo " ### Proximo Job URL => (https://jenkins.superati.com.br/job/site-superati
                                                         sh "docker stop ${item}"
                                                         sh "docker rm ${item}"
                                                         // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
-                                                        
                                                 }
                                                         
                                         }
