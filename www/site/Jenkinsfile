@@ -23,25 +23,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
     node(label) {
         container('jenkins-slave-k8s'){
                  
-            stage('tem container pra matar?'){
-                            try {
-                            
-                                        def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
-                                        if (isContainerRunning) {
-                                            def data = isContainerRunning.split('\n') 
-
-                                            echo '### => Container rodando = '+  isContainerRunning
-                                            for (item in data){
-                                                    sh "docker stop ${item}"
-                                                    // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
-                                                    sh "docker rm ${item}"
-                                                }
-                                        }
-                                }
-                                catch (e) {
-                                    throw e;
-                                }
-            }
+            
         }
                 try {
                     stage('Git Clone - superati') {
@@ -77,25 +59,24 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
                     
                     stage('tem container pra matar?'){
-                        try {
-                           
-                                    def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
-                                    def data = isContainerRunning.split('\n') 
+                            try {
+                            
+                                        def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
+                                        if (isContainerRunning) {
+                                            def data = isContainerRunning.split('\n') 
 
-                                    echo '### => Container rodando = '+  isContainerRunning
-                                    if ( data.size() > 0 ) {
-                                        data.each(){
-                                            sh "docker stop ${it}"
-                                            // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
-                                            sh "docker rm ${it}"
+                                            echo '### => Container rodando = '+  isContainerRunning
+                                            for (item in data){
+                                                    sh "docker stop ${item}"
+                                                    // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
+                                                    sh "docker rm ${item}"
+                                                }
                                         }
-                                        
-                                    }
-                            }
-                             catch (e) {
-                                throw e;
-                            }
-                    }
+                                }
+                                catch (e) {
+                                    throw e;
+                                }
+            }       
                     sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
