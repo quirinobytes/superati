@@ -21,8 +21,24 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
   )
 {
     node(label) {
-        stage ( ' checkout scm'){
-             checkout scm
+        stage('tem container pra matar?'){
+                        try {
+                           
+                                    def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
+                                    def data = isContainerRunning.split('\n') 
+
+                                    echo '### => Container rodando = '+  isContainerRunning
+                                    for (item in data){
+                                            sh "docker stop ${item}"
+                                            // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
+                                            sh "docker rm ${item}"
+                                        }
+                                        
+                                    }
+                            }
+                             catch (e) {
+                                throw e;
+                            }
         }
                 try {
                     stage('Git Clone - superati') {
@@ -35,7 +51,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     // Mark build as failed
                     currentBuild.result == "FAILURE";
                     throw e;
-                }
+        }
 
         stage('Install dependencies - npm install') {
                 container('jenkins-slave-k8s'){
