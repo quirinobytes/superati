@@ -50,7 +50,8 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                 }
         }
 
-        stages('Docker Build - docker build site-superati') {
+        // stages('Docker Build - docker build site-superati') {
+            stages{
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
                     
