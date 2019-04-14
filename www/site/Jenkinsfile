@@ -50,11 +50,11 @@ echo " ### Iniciando o Jenkins Build (${label})- " + env.APP_NAME  + "###"
                 }
         }
 
-        stages('Docker Build - docker build site-superati') {
+        stage('Docker Build - docker build site-superati') {
                 container('jenkins-slave-k8s'){
                     sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
                     
-                    stage('tem container pra matar?'){
+                    // stage('tem container pra matar?'){
                             try {
                                     // def isContainerRunning = sh "docker ps -aq --filter name=site-superati "
                                     String status = sh(returnStatus: true, script: "docker ps -aq --filter name=site-superati > containers.txt")
@@ -79,7 +79,7 @@ echo " ### Iniciando o Jenkins Build (${label})- " + env.APP_NAME  + "###"
                                 catch (e) {
                                     throw e;
                                 }
-                    }
+                    // }
                     sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
