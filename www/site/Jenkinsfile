@@ -27,16 +27,16 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                             try {
                             
                                         def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
-                                        def data = isContainerRunning.split('\n') 
+                                        if (isContainerRunning != "") {
+                                            def data = isContainerRunning.split('\n') 
 
-                                        echo '### => Container rodando = '+  isContainerRunning
-                                        for (item in data){
-                                                sh "docker stop ${item}"
-                                                // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
-                                                sh "docker rm ${item}"
-                                            }
-                                            
-                                        
+                                            echo '### => Container rodando = '+  isContainerRunning
+                                            for (item in data){
+                                                    sh "docker stop ${item}"
+                                                    // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
+                                                    sh "docker rm ${item}"
+                                                }
+                                        }
                                 }
                                 catch (e) {
                                     throw e;
