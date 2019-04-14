@@ -68,7 +68,7 @@ echo " ### Proximo Job URL => (https://jenkins.superati.com.br/job/site-superati
                                        
                                         if (isContainerRunning.length() > 1){
                                             echo "Tem container para matar"
-                                                sh "docker stop site-superati"
+                                                // sh "docker stop site-superati"
 
                                                 def data = isContainerRunning.split('\n')
                                                 echo '### => Container rodando = '+  data
