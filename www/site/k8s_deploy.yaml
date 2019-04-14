@@ -1,14 +1,13 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: site-superati
+apiVersion: extensions/v1beta1
+kind: Ingress
 spec:
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 1010
-      targetPort: 1010
-      name: site-superati
+  rules:
+  - host: www.superati.com.br
+    http:
+      paths:
+      - backend:
+          serviceName: ingress-13757f9e91a0f5ec888fdc7ed0def098
+          servicePort: 1010
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
