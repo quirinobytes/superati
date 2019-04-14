@@ -3,6 +3,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
 
 //if (env.BRANCH_NAME == 'master') {
 echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
+echo " ### Proximo Job URL => (https://jenkins.superati.com.br/job/site-superati/255/console) - " + env.APP_NAME  + "###"
   podTemplate(
        label: label,
         containers: [
