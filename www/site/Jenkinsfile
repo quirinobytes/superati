@@ -57,10 +57,10 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     stage('tem container pra matar?'){
                         try {
                            
-                                    def isContainerRunning = sh 'docker ps -aq --filter name=quirinobytes/site-superati-prod '
+                                    def isContainerRunning = sh 'docker ps -aq --filter name=site-superati-prod '
                                     echo '### => Container rodando = '+  isContainerRunning
                                     if ( isContainerRunning != null ) {
-                                        sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod)'
+                                        sh 'docker rm $(docker ps -aq --filter name=site-superati-prod)'
                                     }
                             }
                           //sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod); true'
