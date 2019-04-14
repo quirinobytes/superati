@@ -87,7 +87,7 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                 throw e;
                             }
                     // }
-                    sh 'kubectl apply -f k8s_deploy.yaml'
+                    sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
                 }
