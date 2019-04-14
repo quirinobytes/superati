@@ -77,6 +77,9 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                                 }
                                                 sh "docker rm site-superati"
                                         }
+                                        else{
+                                            echo "Nao encontrei nenhum container rodando, para mata-los"
+                                        }
                                         
                                     }
                             }
@@ -84,7 +87,7 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                 throw e;
                             }
                     // }
-                    // sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
+                    sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
                 }
