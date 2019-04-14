@@ -61,8 +61,12 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
 
                                     echo '### => Container rodando = '+  isContainerRunning
                                     if ( isContainerRunning != null ) {
-                                        sh 'docker stop site-superati'
-                                        sh 'docker rm $(docker ps -aq --filter name=site-superati)'
+                                        isContainerRunning.each(){
+                                            sh 'docker stop $it'
+                                            // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
+                                            sh 'docker rm $it'
+                                        }
+                                        
                                     }
                             }
                           
