@@ -67,15 +67,17 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                        
                                         if (isContainerRunning.length() > 1){
                                             echo "Tem container para matar"
-                                           
+                                                sh "docker stop site-superati"
+
                                                 def data = isContainerRunning.split('\n')
                                                 echo '### => Container rodando = '+  data
                                                 for (item in data){
+                                                        sh "docker stop ${item}"
                                                         sh "docker rm ${item}"
                                                         // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
                                                         
                                                 }
-                                                        sh "docker stop site-superati"
+                                                        
                                         }
                                         else{
                                             echo "Nao encontrei nenhum container rodando, para mata-los"
