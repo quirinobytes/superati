@@ -21,7 +21,7 @@ spec:
   ports:
     - port: 1010
       targetPort: 1010
-      nodePort: 1010
+      nodePort: 32765
   selector:
     app: site-superati
     tier: site-superati
