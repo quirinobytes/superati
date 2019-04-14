@@ -21,10 +21,40 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
   )
 {
     node(label) {
-      
+        
+                try {
+                    stage('Git Clone - superati') {
+                        // checkout scm
+                        echo "Git checkout - Site Superati " + env.BRANCH_NAME
+                        git url: 'https://github.com/quirinobytes/superati.git'
+                    }
+                } catch (e) {
+                    echo "Erro: Houve falha no git checkout!"
+                    // Mark build as failed
+                    currentBuild.result == "FAILURE";
+                    throw e;
+        }
+
+        stage('Install dependencies - npm install') {
+                container('jenkins-slave-k8s'){
+                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; /usr/bin/npm install'
+                }
+        }
+        stage('Starting app.js - node app') {
+                container('jenkins-slave-k8s'){
+                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; /usr/bin/node app.js &'
+                }
+        }
+        stage('Kubectl - get pods') {
+                container('jenkins-slave-k8s'){
+                    sh "kubectl get pods"
+                }
+        }
+
         stage('Docker Build - docker build site-superati') {
-                sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
-                container('jenkins-slave-k8s'){    
+                container('jenkins-slave-k8s'){
+                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; docker build -t quirinobytes/site-superati .'
+                    
                     stage('tem container pra matar?'){
                             try {
                                 def isContainerRunning = sh "docker ps -aq --filter name=site-superati"
@@ -49,37 +79,6 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
                 }
-            }
-        
-        try {
-            stage('Git Clone - superati') {
-            // checkout scm
-            echo "Git checkout - Site Superati " + env.BRANCH_NAME
-            git url: 'https://github.com/quirinobytes/superati.git'
         }
-        } catch (e) {
-            echo "Erro: Houve falha no git checkout!"
-            // Mark build as failed
-            currentBuild.result == "FAILURE";
-            throw e;
-    }
-
-        stage('Install dependencies - npm install') {
-                container('jenkins-slave-k8s'){
-                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; /usr/bin/npm install'
-                }
-        }
-        stage('Starting app.js - node app') {
-                container('jenkins-slave-k8s'){
-                    sh 'cd /home/jenkins/workspace/site-superati/www/site ; /usr/bin/node app.js &'
-                }
-        }
-        stage('Kubectl - get pods') {
-                container('jenkins-slave-k8s'){
-                    sh "kubectl get pods"
-                }
-        }
-
-        
     }
 }
