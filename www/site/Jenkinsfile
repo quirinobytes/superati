@@ -3,7 +3,7 @@ def label = "jenkins-builder-${UUID.randomUUID().toString()}"
 
 
 //if (env.BRANCH_NAME == 'master') {
-echo " ### Iniciando o Jenkins Build (${label})- " + env.APP_NAME  + "###"
+echo " ### Iniciando o Jenkins Build ($label)- " + env.APP_NAME  + "###"
   podTemplate(
        label: label,
         containers: [
@@ -75,10 +75,10 @@ echo " ### Iniciando o Jenkins Build (${label})- " + env.APP_NAME  + "###"
                                                 }
                                         
                                     }
-                                }
-                                catch (e) {
-                                    throw e;
-                                }
+                            }
+                            catch (e) {
+                                throw e;
+                            }
                     // }
                     sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
