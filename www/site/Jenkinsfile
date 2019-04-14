@@ -77,25 +77,23 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     
                     stage('tem container pra matar?'){
                             try {
-                            
-                                        def isContainerRunning = $(docker ps -aq --filter name=site-superati)
-                                        echo isContainerRunning
-                                        echo isContainerRunning.size()
-                                        if ( isContainerRunning != null ) {
-                                            def data = isContainerRunning.split('\n') 
-
-                                            echo '### => Container rodando = '+  isContainerRunning
-                                            for (item in data){
-                                                    sh "docker stop ${item}"
-                                                    // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
-                                                    sh "docker rm ${item}"
-                                                }
+                                def isContainerRunning = sh "docker ps -aq --filter name=site-superati"
+                                echo isContainerRunning
+                                if ( isContainerRunning != null ) {
+                                    echo "Entrou no é'nulo"
+                                        def data = isContainerRunning.split('\n') 
+                                        echo '### => Container rodando = '+  isContainerRunning
+                                        for (item in data){
+                                                sh "docker stop ${item}"
+                                                // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
+                                                sh "docker rm ${item}"
                                         }
                                 }
-                                catch (e) {
-                                    throw e;
-                                }
-            }       
+                            }
+                            catch (e) {
+                                throw e;
+                            }
+                    }
                     sh 'docker run --name site-superati -p 1010:1010 -v /var/run/docker.sock:/var/run/docker.sock -d quirinobytes/site-superati  '
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
