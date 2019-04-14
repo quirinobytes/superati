@@ -21,18 +21,17 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
   )
 {
     node(label) {
-        
-                try {
-                    stage('Git Clone - superati') {
-                        // checkout scm
-                        echo "Git checkout - Site Superati " + env.BRANCH_NAME
-                        git url: 'https://github.com/quirinobytes/superati.git'
-                    }
-                } catch (e) {
-                    echo "Erro: Houve falha no git checkout!"
-                    // Mark build as failed
-                    currentBuild.result == "FAILURE";
-                    throw e;
+        try {
+            stage('Git Clone - superati') {
+                // checkout scm
+                echo "Git checkout - Site Superati " + env.BRANCH_NAME
+                git url: 'https://github.com/quirinobytes/superati.git'
+            }
+        } catch (e) {
+            echo "Erro: Houve falha no git checkout!"
+            // Mark build as failed
+            currentBuild.result == "FAILURE";
+            throw e;
         }
 
         stage('Install dependencies - npm install') {
