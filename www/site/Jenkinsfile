@@ -63,9 +63,10 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                         def isContainerRunning = readFile('containers.txt').trim()
                                         def nome = "Arquivo isContainerRunning tem (abaixo->)"
                                         echo isContainerRunning
-                                        echo "Meu nome é $nome e isContainer = " + isContainerRunning
+                                        echo "Meu nome é $nome e isContainer = " + isContainerRunning.size
                                        
-                                            echo "Entrou no é'nulo"
+                                        if (isContainerRunning.size > 1)
+                                            echo "Tem container para matar"
                                            
                                                 def data = isContainerRunning.split('\n')
                                                 echo '### => Container rodando = '+  data
@@ -75,6 +76,7 @@ echo " ### Iniciando o Jenkins Build ($label) - " + env.APP_NAME  + "###"
                                                         
                                                 }
                                                 sh "docker rm site-superati"
+                                        }
                                         
                                     }
                             }
