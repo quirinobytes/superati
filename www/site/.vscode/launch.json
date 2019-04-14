@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "Launch file",
+            "type": "bashdb",
             "request": "launch",
-            "name": "deploy",
-            "program": "/root/shell/linux/ok_jenkins_build.sh"
+            "mode": "debug",
+            "program": "ok_jenkins_build.sh"
         }
     ]
 }
