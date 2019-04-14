@@ -57,10 +57,10 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     stage('tem container pra matar?'){
                             try {
                             
-                                        def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
+                                        def isContainerRunning = "\$(docker ps -aq --filter name=site-superati"
                                         echo isContainerRunning
                                         echo isContainerRunning.size()
-                                        if (isContainerRunning) {
+                                        if ( isContainerRunning != null ) {
                                             def data = isContainerRunning.split('\n') 
 
                                             echo '### => Container rodando = '+  isContainerRunning
