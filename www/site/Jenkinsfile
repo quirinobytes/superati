@@ -65,7 +65,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                                         sh 'docker rm $(docker ps -aq --filter name=site-superati)'
                                     }
                             }
-                          //sh 'docker rm $(docker ps -aq --filter name=quirinobytes/site-superati-prod); true'
+                          
                              catch (e) {
                                 throw e;
                             }
