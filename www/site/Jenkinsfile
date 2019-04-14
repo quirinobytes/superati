@@ -62,7 +62,7 @@ echo " ### Iniciando o Jenkins Build (${label})- " + env.APP_NAME  + "###"
                                     if (status){
                                         def isContainerRunning = readFile('containers.txt').trim()
                                         def nome = "rafael"
-                                        echo "Meu nome é ${nome} e isContainer = " + isContainerRunning
+                                        echo "Meu nome é $nome e isContainer = " + isContainerRunning
                                        
                                             echo "Entrou no é'nulo"
                                            
