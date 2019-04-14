@@ -34,7 +34,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                                             sh "docker rm ${item}"
                                         }
                                         
-                                    }
+                                    
                             }
                              catch (e) {
                                 throw e;
