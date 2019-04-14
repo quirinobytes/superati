@@ -21,10 +21,6 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
   )
 {
     node(label) {
-        container('jenkins-slave-k8s'){
-                 
-            
-        }
                 try {
                     stage('Git Clone - superati') {
                         // checkout scm
