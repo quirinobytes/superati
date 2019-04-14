@@ -43,12 +43,12 @@ spec:
         tier: site-superati
     spec:
       containers:
-      - image: cirolini/jenkins-docker-kubectl
+      - image: quirinobytes/site-superati
         name: site-superati
         securityContext:
           privileged: true
         ports:
-        - containerPort: 8080
+        - containerPort: 1010
           name: site-superati
         volumeMounts:
         # - name: jenkins-persistent-storage
@@ -59,6 +59,6 @@ spec:
       - name: docker
         hostPath:
           path: /var/run/docker.sock
-      - name: jenkins-persistent-storage
+      # - name: jenkins-persistent-storage
         # persistentVolumeClaim:
         #   claimName: jenkins-claim
