@@ -57,16 +57,17 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     stage('tem container pra matar?'){
                         try {
                            
-                                    def isContainerRunning = sh 'docker ps -aq --filter name=site-superati'
+                                    def isContainerRunning = sh 'docker ps -aq --filter name=site-superati '
 
-                                    echo '### => Container rodando = '+  ${isContainerRunning}
-                                    for (item in ${isContainerRunning}) {
-                                            sh "docker stop ${item}"
+                                    echo '### => Container rodando = '+  isContainerRunning
+                                    if ( isContainerRunning.size() > 0 ) {
+                                        isContainerRunning.each(){
+                                            sh "docker stop $it"
                                             // sh 'docker rm $(docker ps -aq --filter name=site-superati)'
-                                            sh "docker rm $item"
-                                    }
+                                            sh "docker rm $it"
+                                        }
                                         
-                                    
+                                    }
                             }
                           
                              catch (e) {
@@ -78,8 +79,7 @@ echo ' ### Iniciando o Jenkins Build - ' + env.APP_NAME  + '###'
                     echo '### SUCESSO ### http://www.superati.com.br:1010/'
                     echo 'Job(https://jenkins.superati.com.br/job/site-superati)'
                 
-        
         }
-    }
+        }
     }
 }
